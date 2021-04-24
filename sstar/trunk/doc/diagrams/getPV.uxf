@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>7</zoom_level>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>294</x>
+      <y>252</y>
+      <w>202</w>
+      <h>251</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>189;21;84;21;84;238;21;238</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>294</x>
+      <y>462</y>
+      <w>216</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>203;21;98;21;98;63;21;63</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>721</x>
+      <y>455</y>
+      <w>216</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;77;112;77;203;21</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.Text</type>
+    <coordinates>
+      <x>791</x>
+      <y>511</y>
+      <w>42</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>signals</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <group>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>126</x>
+        <y>329</y>
+        <w>210</w>
+        <h>343</h>
+      </coordinates>
+      <panel_attributes>ChannelAccess
+--
+</panel_attributes>
+      <additional_attributes/>
+    </element>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>140</x>
+        <y>357</y>
+        <w>182</w>
+        <h>98</h>
+      </coordinates>
+      <panel_attributes>getInstance
+--
+lock(singMutex)
+if (not created)
+   create GlobalRegister
+   initChannelAccess
+ca_attach_context
+return instance</panel_attributes>
+      <additional_attributes/>
+    </element>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>140</x>
+        <y>469</y>
+        <w>182</w>
+        <h>147</h>
+      </coordinates>
+      <panel_attributes>getPV(name,attempts,timeout)
+--
+pv = GlobalRegister-&gt;getPV(name)
+try
+{
+   pv-&gt;connect(attempts,timeout)
+}
+catch(...)
+{
+   throw e;
+}
+return pv (smart-pointer)</panel_attributes>
+      <additional_attributes/>
+    </element>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>140</x>
+        <y>630</y>
+        <w>182</w>
+        <h>21</h>
+      </coordinates>
+      <panel_attributes>flush()
+</panel_attributes>
+      <additional_attributes/>
+    </element>
+  </group>
+  <group>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>469</x>
+        <y>238</y>
+        <w>196</w>
+        <h>119</h>
+      </coordinates>
+      <panel_attributes>GlobalRegister
+--
+</panel_attributes>
+      <additional_attributes/>
+    </element>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>483</x>
+        <y>259</y>
+        <w>175</w>
+        <h>84</h>
+      </coordinates>
+      <panel_attributes>getPV(...)
+--
+lock(globalLock)
+...
+do operations to update tables
+...
+return pv (smart-pointer)</panel_attributes>
+      <additional_attributes/>
+    </element>
+  </group>
+  <group>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>476</x>
+        <y>448</y>
+        <w>308</w>
+        <h>147</h>
+      </coordinates>
+      <panel_attributes>PV
+--</panel_attributes>
+      <additional_attributes/>
+    </element>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>497</x>
+        <y>469</y>
+        <w>273</w>
+        <h>98</h>
+      </coordinates>
+      <panel_attributes>connect(attemps,timeout)
+--
+lock(localLock)
+...
+Call of connectionAttempt(...) to do one of these
+1) CA connect (callback) but don't wait
+2) CA connect (callback) but wait( attempts * timeout)
+...</panel_attributes>
+      <additional_attributes/>
+    </element>
+  </group>
+  <group>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>917</x>
+        <y>357</y>
+        <w>238</w>
+        <h>462</h>
+      </coordinates>
+      <panel_attributes>EpicsCallbacks
+--</panel_attributes>
+      <additional_attributes/>
+    </element>
+    <element>
+      <type>com.umlet.element.Class</type>
+      <coordinates>
+        <x>924</x>
+        <y>378</y>
+        <w>224</w>
+        <h>119</h>
+      </coordinates>
+      <panel_attributes>connectionCallback(...)
+--
+lock(localLock)
+if (there is a pending request for subscription)
+   create subscription(...)
+   change state to subscribed
+if (connection state NOT_BOUND)
+  set connection state to CONNECTED
+  execute each connection handler
+connectionCV.notifyAll()
+
+</panel_attributes>
+      <additional_attributes/>
+    </element>
+  </group>
+</diagram>

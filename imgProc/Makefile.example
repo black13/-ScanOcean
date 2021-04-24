@@ -1,0 +1,39 @@
+CC = g++
+
+CXXFLAGS = -Wall -g -fPIC
+
+INCLUDES = -I${EPICS_FOLDER}/include/os/Linux \
+           -I${EPICS_FOLDER}/include \
+           -I${BOOST_BASE}/include \
+           -I${OPENCV_BASE}/include \
+           -I${SSTAR_BASE}/include \
+           -I./include
+
+LFLAGS = -L${BOOST_BASE}/lib \
+         -L${EPICS_FOLDER}/lib/${EPICS_HOST_ARCH} \
+         -L${OPENCV_BASE}/lib \
+         -L${SSTAR_BASE}/bin/static
+
+LIBS = -lca -lboost_thread -lopencv_core -lopencv_highgui -lsstar
+
+SRCS = $(wildcard src/*.cpp)
+
+OBJS = $(SRCS:.cpp=.o)
+
+OUT = program
+
+.PHONY: depend clean
+
+all: $(OUT)
+
+$(OUT): $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o bin/test/$(OUT) $(OBJS) $(LFLAGS) $(LIBS)
+
+.cpp.o:
+	$(CC) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	$(RM) src/*.o *~ bin/test/$(OUT)
+
+depend: $(SRCS)
+	makedepend $(INCLUDES) $^

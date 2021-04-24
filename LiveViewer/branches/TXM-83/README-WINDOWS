@@ -1,0 +1,219 @@
+--------------------------------------------------------------------------------
+LiveViewer - ScanOcean
+Copyright (c) 2012, UChicago Argonne, LLC
+See LICENSE file
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Windows Build
+--------------------------------------------------------------------------------
+
+Building on Windows is more involved than building on Linux or OS X. This 
+project is built using MSVC 2010, Qt 4.8.0, boost 1.49.0, EPICS base, and 
+GStar. If all the dependencies are installed and configured correctly, readers
+can skip to one of the 'Build ScanOcean - LiverViewer Prototype' sections.
+Otherwise, instructions are given below for building dependencies.
+
+--------------------------------------------------------------------------------
+64-bit / Shared Qt
+--------------------------------------------------------------------------------
+
+--- Build Qt-shared-x64 ---
+
+-) Make certain some version of perl is installed and configured, such as
+   ActivePerl.
+
+-) This project is currently developed using Qt-4.8.0. Download 
+   'qt-everywhere-opensource-src-4.8.0.tar.gz' from Qt's ftp site. 
+   Uncompress and extract it somewhere nice, like 'C:\src'.
+
+-) Open a Visual Studio x64 Win64 Command Prompt. Change to the 
+   'qt-everywhere-opensource-src-4.8.0' directory and type the following to 
+   configure the Qt build, build it and install it:
+      > configure -prefix C:\Qt-4.8-shared-x64 -debug-and-release -opensource
+        -shared -no-exceptions -no-accessibility -no-sql-sqlite -no-qt3support
+        -qt-zlib -no-gif -qt-libpng -no-libmng -no-libtiff -no-libjpeg 
+        -no-openssl -no-dbus -no-phonon -no-phonon-backend -no-multimedia 
+        -no-audio-backend -no-webkit -no-script -no-scripttools 
+        -no-declarative -platform win32-msvc2010
+      > nmake
+      > nmake install
+
+-) Edit the system Path environment variable to contain the newly created
+   'Qt-4.8-shared-x64\bin' directory.
+
+--- Build boost-x64 ---
+
+-) This project is currently developed using boost_1_49_0. Download 
+   'boost_1_49_0.zip' from the boost website. 
+   Uncompress it somewhere nice, like 'C:\src'.
+
+-) Open a Visual Studio x64 Win64 Command Prompt.
+   Change directory to the boost root directory and type
+      > bootstrap.bat
+      > bjam --toolset=msvc-10.0 address-model=64 --build-type=complete stage
+
+-) Create a place to install the boost build, like 'C:\boost_1_49_0-x64'.
+
+   Move the contents of the build stage directory 'boost_1_49_0\stage\lib' to 
+   the install location, such as 'C:\boost_1_49_0-x64\lib'.
+
+   Copy the build include directories 'boost_1_49_0\boost' to
+   the install location, such as 'C:\boost_1_49_0-x64\include'.
+
+--- Build GStar for x64 ---
+
+-) This project is dependent upon the GStar library. Download it and put it
+   somewhere nice, like 'C:\src'.
+
+-) Open a Visual Studio x64 Win64 Command Prompt.
+   Change directory to the GStar root directory and build it with
+      > qmake
+      > nmake
+
+-) See the GStar README file for futher instructions.
+
+--- Build EPICS ---
+
+-) Download EPICS base and put it somewhere nice, 
+   like 'C:\epics\base-shared-x64'.
+
+-) Set the EPICS_HOST_ARCH environment variable to 'windows-x64'.
+
+-) Open a Visual Studio x64 Win64 Command Prompt.
+   Change directory to EPICS base and type
+      > gnumake clean uninstall
+      > gnumake
+
+-) Set the EPICS_BASE environment variable.
+
+-) Set the EPICS_CA_MAX_ARRAY_BYTES environment variable to something large
+   like '5000000'.
+
+--- Build ScanOcean - LiverViewer Prototype ---
+
+-) Open a Visual Studio x64 Win64 Command Prompt.
+   Change directory to the LiveViewer root directory. Edit LiveViewer.pro and
+   modify the following:
+
+   BOOST_INCLUDE = "Location of boost include files."
+   BOOST_LIBS = "Location of boost library files."
+   EPICS_BASE = "Location of EPICS base."
+   EPICS_TARGET_OS = "WIN32"
+   EPICS_HOST_ARCH = "windows-x64"
+   GSTAR_INCLUDE = "Location of GStar include files."
+   GSTAR_LIBS = "Location of GStar library file."
+
+-) In the LiveViewer root directoy type the following:
+      $> qmake
+      $> nmake
+
+-) This should build the executable in bin.
+
+-) Make certain the Qt and EPICS DLLs are located on the system path,
+   or copy them to this project's bin directory.
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------
+32-bit / Shared Qt
+--------------------------------------------------------------------------------
+
+--- Build Qt-shared-x86 ---
+
+-) Make certain some version of perl is installed and configured, such as
+   ActivePerl.
+
+-) This project is currently developed using Qt-4.8.0. Download 
+   'qt-everywhere-opensource-src-4.8.0.tar.gz' from Qt's ftp site. 
+   Uncompress and extract it somewhere nice, like 'C:\src'.
+
+-) Open a Visual Studio Command Prompt (the one for x86). Change directory the
+   'qt-everywhere-opensource-src-4.8.0' directory and type the following to 
+   configure the Qt build, build it and install it:
+      > configure -prefix C:\Qt-4.8-shared-x64 -debug-and-release -opensource
+        -shared -no-exceptions -no-accessibility -no-sql-sqlite -no-qt3support
+        -qt-zlib -no-gif -qt-libpng -no-libmng -no-libtiff -no-libjpeg 
+        -no-openssl -no-dbus -no-phonon -no-phonon-backend -no-multimedia 
+        -no-audio-backend -no-webkit -no-script -no-scripttools 
+        -no-declarative -platform win32-msvc2010
+      > nmake
+      > nmake install
+
+-) Edit the system Path environment variable to contain the newly created
+   'Qt-4.8-shared-x86\bin' directory.
+
+--- Build boost-x86 ---
+
+-) This project is currently developed using boost_1_49_0. Download 
+   'boost_1_49_0.zip' from the boost website. 
+   Uncompress it somewhere nice, like 'C:\src'.
+
+-) Open a Visual Studio Command Prompt (the one for x86).
+   Change directory to the boost root directory and type
+      > bootstrap.bat
+      > bjam --toolset=msvc-10.0 --build-type=complete stage
+
+-) Create a place to install the boost build, like 'C:\boost_1_49_0-x86'.
+
+   Move the contents of the build stage directory 'boost_1_49_0\stage\lib' to 
+   the install location, such as 'C:\boost_1_49_0-x86\lib'.
+
+   Copy the build include directories 'boost_1_49_0\boost' to
+   the install location, such as 'C:\boost_1_49_0-x64\include'.
+
+--- Build GStar for x86 ---
+
+-) This project is dependent upon the GStar library. Download it and put it
+   somewhere nice, like 'C:\src'.
+
+-) Open a Visual Studio Command Prompt (the one for x86).
+   Change directory to the GStar root directory and build it with
+      > qmake
+      > nmake
+
+-) See the GStar README file for futher instructions.
+
+--- Build EPICS ---
+
+-) Download EPICS base and put it somewhere nice, 
+   like 'C:\epics\base-shared-x86'.
+
+-) Set the EPICS_HOST_ARCH environment variable to 'win32-x86'.
+
+-) Open a Visual Studio Command Prompt (the one for x86).
+   Change directory to EPICS base and type
+      > gnumake clean uninstall
+      > gnumake
+
+-) Set the EPICS_BASE environment variable.
+
+-) Set the EPICS_CA_MAX_ARRAY_BYTES environment variable to something large
+   like '5000000'.
+
+--- Build ScanOcean - LiverViewer Prototype ---
+
+-) Open a Visual Studio Command Prompt (the one for x86).
+   Change directory to the LiveViewer root directory. Edit LiveViewer.pro and
+   modify the following:
+
+   BOOST_INCLUDE = "Location of boost include files."
+   BOOST_LIBS = "Location of boost library files."
+   EPICS_BASE = "Location of EPICS base."
+   EPICS_TARGET_OS = "WIN32"
+   EPICS_HOST_ARCH = "win32-x86"
+   GSTAR_INCLUDE = "Location of GStar include files."
+   GSTAR_LIBS = "Location of GStar library file."
+
+-) In the LiveViewer root directoy type the following:
+      $> qmake
+      $> nmake
+
+-) This should build the executable in bin.
+
+-) Make certain the Qt and EPICS DLLs are located on the system path,
+   or copy them to this project's bin directory.
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------

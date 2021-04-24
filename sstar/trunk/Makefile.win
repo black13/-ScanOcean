@@ -1,0 +1,94 @@
+#EPICS_BASE = ..\base-3.15.0.1
+VS_VER = vc100
+#EPICS_HOST_ARCH = win32-x86
+#EPICS_HOST_ARCH = windows-x64
+OS_INC = WIN32
+
+INCLUDES = /I include /I $(EPICS_BASE)\include /I $(EPICS_BASE)\include\os\$(OS_INC) /I $(EPICS_BASE)\include\compiler\msvc
+
+CXXFLAGS = /c /EHsc /MD /D__STDC__=0 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /DEPICS_BUILD_DLL /DEPICS_CALL_DLL
+#Debug uncomment for debug build
+#CXXFLAGS = /c /EHsc /MDd /Zi /Od /D__STDC__=0 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /DEPICS_BUILD_DLL /DEPICS_CALL_DLL /D_ITERATOR_DEBUG_LEVEL=2
+
+LIB_PATHS = /LIBPATH $(EPICS_BASE)\lib\$(EPICS_HOST_ARCH)\ca.lib /LIBPATH $(EPICS_BASE)\lib\$(EPICS_HOST_ARCH)\Com.lib 
+
+CC = cl /nologo
+AR = lib /nologo
+LD = link /nologo
+
+STATIC_LIB = bin\static\sstar.lib
+
+SHARED_DLL = bin\shared\sstar.dll
+SHARED_LIB = bin\shared\sstar.lib
+SHARED_EXPORT = bin\shared\sstar.exp
+
+SRCS = \
+	src\core\CallbackParam.cpp \
+	src\core\ChannelAccess.cpp \
+	src\core\EpicsCallbacks.cpp \
+	src\core\GlobalRegister.cpp \
+	src\core\PV.cpp \
+	src\core\PVGroup.cpp \
+	src\core\PVResources.cpp \
+	src\core\PVSharedResources.cpp \
+	src\core\PVSpecificResources.cpp \
+	src\handlers\CAPrintConnectionState.cpp \
+	src\handlers\CAPrintDataChange.cpp \
+	src\handlers\CAPrintText.cpp \
+	src\handlers\CAReaders.cpp \
+	src\handlers\base\CAConnectionHandler.cpp \
+	src\handlers\base\CAEventHandler.cpp \
+	src\handlers\base\CAExceptionHandler.cpp \
+	src\handlers\base\CAHandler.cpp \
+	src\handlers\base\CANegativeOutcomeHandler.cpp \
+	src\handlers\base\CAOutcomeHandler.cpp \
+	src\handlers\base\CAParamHandler.cpp \
+	src\handlers\base\CAPositiveOutcomeHandler.cpp \
+	src\scan\CACallback.cpp \
+	src\scan\CAConnectionCallback.cpp \
+	src\scan\Command.cpp \
+	src\scan\Scan.cpp \
+	src\scan\ScanCommand.cpp \
+	src\scan\ScanSleepCommand.cpp \
+	src\scan\ScanConditionCommand.cpp \
+	src\scan\ScanIfConditionalCommand.cpp \
+	src\scan\ScanLoopCommand.cpp \
+	src\scan\ScanMacroCommand.cpp \
+	src\scan\ScanSequenceCommand.cpp \
+	src\utils\AbstractTable.cpp \
+	src\utils\ChannelAccessExceptions.cpp \
+	src\utils\ListTable.cpp \
+	src\utils\Logger.cpp \
+	src\utils\Table.cpp
+
+
+OBJS = $(SRCS:.cpp=.obj)
+
+all: check_env $(STATIC_LIB) $(SHARED_DLL) $(SHARED_LIB)
+
+check_env:
+!IFNDEF EPICS_BASE
+	!ERROR EPICS_BASE is not defined!
+!ENDIF
+!IFNDEF EPICS_HOST_ARCH
+	!ERROR EPICS_HOST_ARCH is not defined!
+!ENDIF
+
+clean: 
+	del $(STATIC_LIB)
+	del $(SHARED_DLL)
+	del $(SHARED_LIB)
+	del $(SHARED_EXPORT)
+	del $(OBJS)
+
+$(STATIC_LIB): $(OBJS)
+	$(AR) $(LIB_PATHS) /out:$@ $**
+
+$(SHARED_DLL): $(OBJS)
+	$(LD) /dll $(LIB_PATHS) /out:$@ $**
+
+$(SHARED_LIB): $(OBJS)
+	$(AR) /DEF $(LIB_PATHS) /out:$@ $**
+
+$(OBJS): $(SRC)
+	$(CC) $(CXXFLAGS) $(INCLUDES) /Fo$@ $**

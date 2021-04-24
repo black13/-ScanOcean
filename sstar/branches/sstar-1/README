@@ -1,0 +1,36 @@
+--------------------------------------------------------------------------------
+SStar
+Copyright (c) 2012, UChicago Argonne, LLC
+See LICENSE file
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Basic Build
+--------------------------------------------------------------------------------
+
+-) EPICS base 3.14.12.2 has to be properly installed on your system and the lib
+   directory added to LD_LIBRARY_PATH. Additionally also the following 
+   environment variables have to be defined for an easy build
+   - EPICS_FOLDER	e.g. /local/epics/base-3.14.12.2-debug	
+   - EPICS_HOST_ARCH	e.g. linux-x86_64-debug
+
+-) Boost 1.49.0 has to be properly installed on your system and the lib directory
+   added to LD_LIBRARY_PATH. Additionally also the following environment
+   variables have to be defined for an easy build
+   - BOOST_BASE		e.g. /local/xxxxx/boost_1_49_0
+
+-) In the root directoy you type one of the following to build:
+      $> make 			(examples + shared library + static library)
+      $> make shared 		(shared library)
+      $> make static		(static library)
+      $> make example 		(examples) 
+
+-) In the root directoy type one of the following to clean:
+      $> make clean		(examples + shared library)
+      $> make shared-clean	(shared library)
+      $> make static-clean	(static library)
+      $> make example-clean	(examples) 
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------

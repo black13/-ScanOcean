@@ -1,0 +1,2 @@
+Open Visual Studio command prompt
+nmake /F Makefile.win

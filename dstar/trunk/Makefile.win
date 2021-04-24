@@ -1,0 +1,78 @@
+#HDF5_BASE = ..\libHDF5
+#TIFF_BASE = ..\libTiff
+#BOOST_BASE = ..\boost_1_49_0
+
+INCLUDES = /I include /I $(BOOST_BASE) /I $(HDF5_BASE)\include /I $(TIFF_BASE)\include
+
+#Release
+CXXFLAGS = /c /EHsc /MD
+#Debug uncomment to create debug
+#CXXFLAGS = /c /EHsc /Zi /Od /MDd 
+
+LIB_PATHS = /LIBPATH $(HDF5_BASE)\lib\hdf5.lib /LIBPATH $(TIFF_BASE)\lib\libtiff.lib
+
+CC = cl /nologo
+AR = lib /nologo
+LD = link /nologo
+
+PROJ_NAME = dstar
+
+STATIC_LIB = lib\static\$(PROJ_NAME).lib
+
+SHARED_DLL = lib\shared\$(PROJ_NAME).dll
+SHARED_LIB = lib\shared\$(PROJ_NAME).lib
+SHARED_EXPORT = lib\shared\$(PROJ_NAME).exp
+
+SRCS = \
+	src\AbstractAttribute.cpp \
+	src\AbstractData.cpp \
+	src\AbstractGroup.cpp \
+	src\AbstractObject.cpp \
+	src\AbstractView.cpp \
+	src\HDF5Attribute.cpp \
+	src\HDF5Data.cpp \
+	src\HDF5DataScalar.cpp \
+	src\HDF5DataSimple.cpp \
+	src\HDF5File.cpp \
+	src\HDF5Group.cpp \
+	src\HDF5Object.cpp \
+	src\Selection.cpp \
+	src\TIFFData.cpp \
+	src\TIFFFile.cpp \
+	src\TIFFObject.cpp
+
+OBJS = $(SRCS:.cpp=.obj)
+
+all: check_env $(STATIC_LIB) $(SHARED_DLL) $(SHARED_LIB)
+
+check_env:
+!IFNDEF HDF5_BASE
+	!ERROR HDF5_BASE is not defined!
+!ENDIF
+!IFNDEF TIFF_BASE
+	!ERROR TIFF_BASE is not defined!
+!ENDIF
+!IFNDEF BOOST_BASE
+	!ERROR BOOST_BASE is not defined!
+!ENDIF
+
+debug:$(DEBUG_STATIC_LIB) $(DEBUG_SHARED_DLL) $(DEBUG_SHARED_LIB)
+
+clean: 
+	del $(STATIC_LIB)
+	del $(SHARED_DLL)
+	del $(SHARED_LIB)
+	del $(SHARED_EXPORT)
+	del $(OBJS)
+
+$(STATIC_LIB): $(OBJS)
+	$(AR) $(LIB_PATHS) /out:$@ $**
+
+$(SHARED_DLL): $(OBJS)
+	$(LD) /dll $(LIB_PATHS) /out:$@ $**
+
+$(SHARED_LIB): $(OBJS)
+	$(AR) /DEF $(LIB_PATHS) /out:$@ $**
+
+$(OBJS): $(SRC)
+	$(CC) $(CXXFLAGS) $(INCLUDES) /Fo$@ $**

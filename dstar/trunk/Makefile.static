@@ -1,0 +1,37 @@
+#HDF5_BASE = "/local/usr/hdf5"
+#TIFF_BASE = "/local/usr/tiff"
+
+CC = g++
+
+CXXFLAGS = -Wall -g -fPIC
+
+INCLUDES = -I${HDF5_BASE}/include -I./include
+
+LFLAGS = -L${HDF5_BASE}/lib -L${TIFF_BASE}/lib
+
+LIBS = -lhdf5 -ltiff
+
+SRCS = $(wildcard src/*.cpp)
+
+OBJS = $(SRCS:.cpp=.o)
+
+DSTAR_LIB = libdstar.a
+
+.PHONY: depend clean
+
+all: $(DSTAR_LIB)
+
+$(DSTAR_LIB): $(OBJS)
+	ar rcs lib/static/$(DSTAR_LIB) $(OBJS)
+
+.cpp.o:
+	$(CC) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	$(RM) src/*.o *~ lib/static/$(DSTAR_LIB)
+
+
+depend: $(SRCS)
+	makedepend $(INCLUDES) $^
+
+

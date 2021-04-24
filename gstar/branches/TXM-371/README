@@ -1,0 +1,30 @@
+--------------------------------------------------------------------------------
+GStar - ScanOcean
+Copyright (c) 2012, UChicago Argonne, LLC
+See LICENSE file
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Basic Build
+--------------------------------------------------------------------------------
+
+-) Make certain Qt is properly installed on your system. GStar is currently
+   developed using Qt 4.8.0. Check that the Qt bin directory is added to the
+   system path. On UNIX variants, the Qt lib directory should be added to
+   LD_LIBRARY_PATH.
+
+-) If the Qt version above is built as shared libraries, GStar must be compiled
+   as a shared library. Do so by editing GStar.pro so that the CONFIG line
+   does NOT have 'staticlib' on it. If the Qt version above is biult as static
+   libraries, GStar must be compiled as a static library. Do so by editing
+   GStar.pro so that the CONFIG Line does have 'staticlib' on it.
+
+-) In the XPCSUI root directoy type the following:
+      $> qmake
+      $> make
+
+-) This should build the executable in bin.
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------

@@ -1,0 +1,71 @@
+--------------------------------------------------------------------------------
+LiveViewer - ScanOcean
+Copyright (c) 2012, UChicago Argonne, LLC
+See LICENSE file
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Linux Build
+--------------------------------------------------------------------------------
+
+-) Make certain Qt is properly installed on your system. LiveViewer is 
+   currently developed using Qt 4.8.0. Check that that Qt bin directory is 
+   added to the system path. On UNIX variants, the Qt lib directory should be 
+   added to LD_LIBRARY_PATH.
+
+-) Make certain EPICS is properly installed on your system. LiveViewer is 
+   currently developed using EPICS base 3.14.12.2. Modify the EPICS_BASE and
+   EPICS_HOST_ARCH qmake variables in LiveViewer.pro file to reflect the EPICS 
+   install location and respective platform. Check that the environment 
+   variables are set to reflect the EPICS install used.   
+
+-) Make certain the boost library is installed on your system. LiveViewer is
+   currently developed using boost-1.49.0. Modify the BOOST_INCLUDE and 
+   BOOST_LIBS qmake variables in LiveViewer.pro to reflect the boost 
+   install location for your platform.
+
+-) In the LiveViewer root directoy type the following:
+      $> qmake
+      $> make
+
+-) This should build the executable in bin.
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+OS X Build
+--------------------------------------------------------------------------------
+
+-) Make certain Qt is properly installed on your system. LiveViewer is 
+   currently developed using Qt 4.8 from qt-mac-opensource-4.8.0.dmg found 
+   under "Open Source C++ development on Mac OS X" on the Qt website. Other 
+   builds and configurations should work just fine, however.
+
+-) Make certain EPICS is properly installed on your system. LiveViewer is 
+   currently developed using EPICS base 3.14.12.2. Modify the EPICS_BASE and
+   EPICS_HOST_ARCH qmake variables in LiveViewer.pro file to reflect the EPICS 
+   install location and respective platform. Check that the environment 
+   variables are set to reflect the EPICS install used.   
+
+-) Make certain the boost library is installed on your system. LiveViewer is
+   currently developed using boost-1.49.0. Modify the BOOST_INCLUDE and 
+   BOOST_LIBS qmake variables in LiveViewer.pro to reflect the boost 
+   install location for your platform.
+
+-) In the LiveViewer root directoy type the following:
+      $> qmake -spec macx-g++
+      $> make
+
+-) This should build the executable in bin.
+
+-) In order to create an app bundle containing the Qt framework, type the 
+   following from the LiveViewer root directory
+      $> cd bin
+      $> macdeployqt LiveViewer.app
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------

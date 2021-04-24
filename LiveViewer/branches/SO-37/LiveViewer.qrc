@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/start.png</file>
+        <file>images/stop.png</file>
+        <file>images/cursor.png</file>
+        <file>images/zoomin.png</file>
+        <file>images/zoomout.png</file>
+        <file>images/fill.png</file>
+        <file>images/zoomoriginal.png</file>
+    </qresource>
+</RCC>

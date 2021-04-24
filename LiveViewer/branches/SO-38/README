@@ -1,0 +1,24 @@
+--------------------------------------------------------------------------------
+LiveViewer - ScanOcean
+Copyright (c) 2012, UChicago Argonne, LLC
+See LICENSE file
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Basic Build
+--------------------------------------------------------------------------------
+
+-) Make certain Qt is properly installed on your system. LiveViewer is 
+   currently developed using Qt 4.8.0. Check that that Qt bin directory is 
+   added to the system path. On UNIX variants, the Qt lib directory should be 
+   added to LD_LIBRARY_PATH.
+
+-) In the LiveViewer root directoy type the following:
+      $> qmake
+      $> make
+
+-) This should build the executable in bin.
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------

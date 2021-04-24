@@ -1,0 +1,131 @@
+--------------------------------------------------------------------------------
+LiveViewer - ScanOcean
+Copyright (c) 2012, UChicago Argonne, LLC
+See LICENSE file
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Linux Build
+--------------------------------------------------------------------------------
+
+Follow these instructions for a quick start to building this project. If any 
+of the dependenices need to be built, see their respective sections below.
+
+-) Make certain Qt is properly installed on your system. LiveViewer is 
+   currently developed using Qt 4.8.0. Check that that Qt bin directory is 
+   added to the system path, and that the Qt lib directory is added to 
+   LD_LIBRARY_PATH.
+
+-) Make certain EPICS is properly installed on your system. LiveViewer is 
+   currently developed using EPICS base 3.14.12.2. Modify the EPICS_BASE,
+   EPICS_HOST_ARCH and EPICS_TARGET_OS qmake variables in LiveViewer.pro 
+   file to reflect the EPICS install location and respective platform. 
+   Check that the environment variables are set to reflect the EPICS 
+   install used. On Linux, EPICS_TARGET_OS should be set to "Linux".
+
+-) Make certain the boost library is installed on your system. LiveViewer is
+   currently developed using boost-1.49.0. Modify the BOOST_INCLUDE and 
+   BOOST_LIBS qmake variables in LiveViewer.pro to reflect the boost 
+   install location for your platform.
+
+-) Make certain GStar is installed on your system. Modify the GSTAR_INCLUDE and
+   GSTAR_LIBS qmake variables in LiveViewer.pro to reflect the GStar install
+   location for you platform.
+
+-) In the LiveViewer root directoy type the following:
+      $> qmake
+      $> make
+
+-) This should build the executable in bin.
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+64-bit / Static Qt
+--------------------------------------------------------------------------------
+
+--- Build Qt-static-x64 ---
+
+-) This project is currently developed using Qt-4.8.0. Download 
+   'qt-everywhere-opensource-src-4.8.0.tar.gz' from Qt's ftp site. 
+   Uncompress and extract it somewhere nice.
+
+-) Open a command prompt. Change to the 
+   'qt-everywhere-opensource-src-4.8.0' directory and type the following to 
+   configure the Qt build, build it and install it:
+      > ./configure --prefix=/usr/local/Qt-4.8-static-x64 -release -static 
+        -no-accessibility -no-sql-db2 -no-sql-ibase -no-sql-mysql -no-sql-oci 
+        -no-sql-odbc -no-sql-psql -no-sql-sqlite -no-sql-sqlite2 
+        -no-sql-sqlite_symbian -no-sql-tds -no-qt3support -no-multimedia 
+        -no-audio-backend -no-phonon -no-phonon-backend -no-svg -no-webkit 
+        -no-javascript-jit -no-declarative -no-declarative-debug -no-gif 
+        -no-libtiff -no-libmng -no-libjpeg -no-openssl -no-nas-sound 
+        -no-opengl -no-openvg
+      > make
+      > make install
+
+-) Edit the system path environment variable to contain the newly created
+   '/usr/local/Qt-4.8-static-x64/bin' directory.
+
+--- Build boost ---
+
+-) This project is dependent upon the boost library. It is currently developed
+   using boost_1_49_0. Download it and put it somewhere nice.
+
+-) Open a command prompt, change to the boost directory, and 
+   type the following:
+      > ./bootstrap.sh --prefix=path/to/installation/prefix
+      > ./b2 install
+
+--- Build GStar ---
+
+-) This project is dependent upon the GStar library. Download it and put it
+   somewhere nice.
+
+-) Open a command prompt.
+   Change directory to the GStar root directory and build it with
+      > qmake
+      > make
+
+-) See the GStar README file for futher instructions.
+
+--- Build EPICS ---
+
+-) Download EPICS base and put it somewhere nice.
+
+-) Set the EPICS_TARGET_OS environment variable to 'Linux'.
+
+-) Set the EPICS_HOST_ARCH environment variable to 'linux-x86_64'.
+
+-) Follow the EPICS instructions for building.
+
+-) Set the EPICS_BASE environment variable.
+
+-) Set the EPICS_CA_MAX_ARRAY_BYTES environment variable to something large
+   like '5000000'.
+
+--- Build ScanOcean - LiverViewer Prototype ---
+
+-) Open a Visual Studio x64 Win64 Command Prompt.
+   Change directory to the LiveViewer root directory. Edit LiveViewer.pro and
+   modify the following:
+
+   BOOST_INCLUDE = "Location of boost include files."
+   BOOST_LIBS = "Location of boost library files."
+   EPICS_BASE = "Location of EPICS base."
+   EPICS_TARGET_OS = "Linux"
+   EPICS_HOST_ARCH = "linux-x86_64"
+   GSTAR_INCLUDE = "Location of GStar include files."
+   GSTAR_LIBS = "Location of GStar library file."
+
+-) In the LiveViewer root directoy type the following:
+      $> qmake
+      $> make
+
+-) This should build the executable in bin.
+
+-) Enjoy!
+
+--------------------------------------------------------------------------------

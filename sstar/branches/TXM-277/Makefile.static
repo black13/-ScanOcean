@@ -1,0 +1,35 @@
+CC = g++
+
+CXXFLAGS = -Wall -g -fPIC
+
+INCLUDES = -I${EPICS_FOLDER}/include/os/Linux -I${EPICS_FOLDER}/include -I${BOOST_BASE}/include -I./include
+
+LFLAGS = -L${BOOST_BASE}/lib -L${EPICS_FOLDER}/lib/${EPICS_HOST_ARCH}
+
+LIBS = -lca -lboost_thread
+
+SRCS = $(wildcard src/core/*.cpp)
+SRCS += $(wildcard src/handlers/*.cpp)
+SRCS += $(wildcard src/handlers/base/*.cpp)
+SRCS += $(wildcard src/scan/*.cpp)
+SRCS += $(wildcard src/utils/*.cpp)
+
+OBJS = $(SRCS:.cpp=.o)
+
+OUT = libsstar.a
+
+.PHONY: depend clean
+
+all: $(OUT)
+
+$(OUT): $(OBJS)
+	ar rcs bin/static/$(OUT) $(OBJS)
+	
+.cpp.o:
+	$(CC) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	$(RM) src/*.o src/core/*.o src/handlers/*.o src/utils/*.o src/tests/*.o *~ bin/static/$(OUT)
+
+depend: $(SRCS)
+	makedepend $(INCLUDES) $^
